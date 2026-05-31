@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hananori - Konveksi Tracker</title>
+    <!-- Memanggil Tailwind CSS untuk UI -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+    <!-- KONTENER UTAMA -->
+    <div id="app" class="w-full max-w-4xl p-4">
+
+        <!-- HALAMAN AUTENTIKASI (LOGIN/REGISTER) -->
+        <div id="auth-section" class="bg-white p-8 rounded-xl shadow-lg max-w-md mx-auto">
+            <div class="text-center mb-6">
+                <h1 class="text-2xl font-bold text-gray-800">Hananori Konveksi 🧵</h1>
+                <p class="text-gray-500 text-sm mt-1" id="auth-subtitle">Silakan masuk ke akun admin</p>
+            </div>
+
+            <!-- Form Auth -->
+            <form id="auth-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Username</label>
+                    <input type="text" id="username" class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" id="password" class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" required>
+                </div>
+                <button type="submit" id="auth-btn" class="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition">Login</button>
+            </form>
+
+            <div class="mt-4 text-center">
+                <button id="toggle-auth" class="text-sm text-blue-600 hover:underline">Belum punya akun? Register di sini</button>
+            </div>
+            <div id="auth-message" class="mt-4 text-center text-sm font-semibold"></div>
+        </div>
+
+        <!-- HALAMAN DASHBOARD (INPUT & VIEW DATA) -->
+        <div id="dashboard-section" class="hidden space-y-6">
+            <!-- Header Dashboard -->
+            <div class="flex justify-between items-center bg-white p-6 rounded-xl shadow-sm">
+                <h2 class="text-xl font-bold text-gray-800">Sistem Pelacakan Produksi</h2>
+                <button id="logout-btn" class="text-red-500 font-semibold hover:underline">Logout</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Form Input Data -->
+                <div class="bg-white p-6 rounded-xl shadow-sm md:col-span-1 h-fit">
+                    <h3 class="font-bold text-gray-700 mb-4">Input Pesanan Baru</h3>
+                    <form id="pesanan-form" class="space-y-3">
+                        <input type="text" id="nama_pelanggan" placeholder="Nama Pelanggan" class="w-full px-3 py-2 border rounded outline-none text-sm" required>
+                        <input type="text" id="jenis_pakaian" placeholder="Jenis Pakaian (Cth: Jaket Bomber)" class="w-full px-3 py-2 border rounded outline-none text-sm" required>
+                        <input type="number" id="jumlah" placeholder="Jumlah Pesanan" class="w-full px-3 py-2 border rounded outline-none text-sm" required>
+                        <select id="tahapan_produksi" class="w-full px-3 py-2 border rounded outline-none text-sm text-gray-600">
+                            <option value="Potong Bahan">Potong Bahan</option>
+                            <option value="Jahit">Jahit</option>
+                            <option value="Sablon/Bordir">Sablon/Bordir</option>
+                            <option value="Finishing & Packing">Finishing & Packing</option>
+                        </select>
+                        <button type="submit" class="w-full bg-green-600 text-white font-semibold py-2 rounded hover:bg-green-700 text-sm">Simpan Pesanan</button>
+                    </form>
+                    <p id="pesanan-message" class="mt-3 text-sm text-center font-semibold text-green-600"></p>
+                </div>
+
+                <!-- Tabel Data -->
+                <div class="bg-white p-6 rounded-xl shadow-sm md:col-span-2 overflow-x-auto">
+                    <h3 class="font-bold text-gray-700 mb-4">Daftar Pesanan Aktif</h3>
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-100 text-gray-600 text-sm">
+                                <th class="p-3 border-b">Pelanggan</th>
+                                <th class="p-3 border-b">Pakaian</th>
+                                <th class="p-3 border-b text-center">Jumlah</th>
+                                <th class="p-3 border-b">Status Tahapan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body" class="text-sm">
+                            <!-- Data dari API akan masuk ke sini -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT LOGIKA JAVASCRIPT -->
+    <script>
+        const API_URL = "/api";
+        let isLoginMode = true;
+
+        // Elemen DOM
+        const authSection = document.getElementById('auth-section');
+        const dashboardSection = document.getElementById('dashboard-section');
+        const authForm = document.getElementById('auth-form');
+        const pesananForm = document.getElementById('pesanan-form');
+        
+        // Cek Token saat halaman dimuat
+        if (localStorage.getItem('token')) {
+            showDashboard();
+        }
+
+        // Toggle Login / Register
+        document.getElementById('toggle-auth').addEventListener('click', () => {
+            isLoginMode = !isLoginMode;
+            document.getElementById('auth-btn').innerText = isLoginMode ? "Login" : "Register";
+            document.getElementById('auth-subtitle').innerText = isLoginMode ? "Silakan masuk ke akun admin" : "Daftarkan admin baru";
+            document.getElementById('toggle-auth').innerText = isLoginMode ? "Belum punya akun? Register di sini" : "Sudah punya akun? Login di sini";
+        });
+
+        // Proses Login / Register
+        authForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const endpoint = isLoginMode ? "/auth/login" : "/auth/register";
+
+            try {
+                const response = await fetch(API_URL + endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await response.json();
+
+                if (response.ok) {
+                    if (isLoginMode) {
+                        localStorage.setItem('token', data.token); // Simpan token ke browser
+                        showDashboard();
+                    } else {
+                        document.getElementById('auth-message').innerText = "Register sukses! Silakan Login.";
+                        document.getElementById('auth-message').className = "mt-4 text-center text-sm font-semibold text-green-600";
+                    }
+                } else {
+                    document.getElementById('auth-message').innerText = data.message || "Terjadi kesalahan.";
+                    document.getElementById('auth-message').className = "mt-4 text-center text-sm font-semibold text-red-600";
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        });
+
+        // Proses Input Data Pesanan
+        pesananForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const token = localStorage.getItem('token');
+            const dataPesanan = {
+                nama_pelanggan: document.getElementById('nama_pelanggan').value,
+                jenis_pakaian: document.getElementById('jenis_pakaian').value,
+                jumlah: document.getElementById('jumlah').value,
+                tahapan_produksi: document.getElementById('tahapan_produksi').value
+            };
+
+            const response = await fetch(API_URL + "/pesanan", {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'auth-token': token // Memasang token satpam
+                },
+                body: JSON.stringify(dataPesanan)
+            });
+
+            if (response.ok) {
+                document.getElementById('pesanan-message').innerText = "Data berhasil disimpan!";
+                pesananForm.reset();
+                fetchDataPesanan(); // Refresh tabel otomatis
+                setTimeout(() => document.getElementById('pesanan-message').innerText = "", 3000);
+            }
+        });
+
+        // Proses Mengambil Data Pesanan
+        async function fetchDataPesanan() {
+            const token = localStorage.getItem('token');
+            const response = await fetch(API_URL + "/pesanan", {
+                method: 'GET',
+                headers: { 'auth-token': token }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const tbody = document.getElementById('table-body');
+                tbody.innerHTML = ""; // Bersihkan tabel
+                
+                data.forEach(item => {
+                    // Warna lencana berdasarkan tahapan produksi
+                    let badgeColor = "bg-gray-200 text-gray-800";
+                    if(item.tahapan_produksi === "Potong Bahan") badgeColor = "bg-blue-100 text-blue-800";
+                    if(item.tahapan_produksi === "Jahit") badgeColor = "bg-yellow-100 text-yellow-800";
+                    if(item.tahapan_produksi === "Finishing & Packing") badgeColor = "bg-green-100 text-green-800";
+
+                    tbody.innerHTML += `
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="p-3 font-semibold">${item.nama_pelanggan}</td>
+                            <td class="p-3">${item.jenis_pakaian}</td>
+                            <td class="p-3 text-center">${item.jumlah}</td>
+                            <td class="p-3">
+                                <span class="px-2 py-1 text-xs rounded-full font-semibold ${badgeColor}">
+                                    ${item.tahapan_produksi}
+                                </span>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+        }
+
+        // Navigasi Tampilan
+        function showDashboard() {
+            authSection.classList.add('hidden');
+            dashboardSection.classList.remove('hidden');
+            fetchDataPesanan(); // Tarik data saat masuk dashboard
+        }
+
+        // Logout
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            localStorage.removeItem('token');
+            dashboardSection.classList.add('hidden');
+            authSection.classList.remove('hidden');
+            document.getElementById('auth-message').innerText = "";
+            document.getElementById('username').value = "";
+            document.getElementById('password').value = "";
+        });
+    </script>
+</body>
+</html>
