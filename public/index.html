@@ -4,83 +4,193 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hananori - Konveksi Tracker</title>
-    <!-- Memanggil Tailwind CSS untuk UI -->
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS with config -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sage: {
+                            50: '#f4f7f4',
+                            100: '#e6ede6',
+                            200: '#ccdccd',
+                            300: '#b3cbb3',
+                            400: '#99bb99',
+                            500: '#8FBC8F', // Soft Sage Green
+                            600: '#7fa87f',
+                            700: '#698c69',
+                        },
+                        cream: '#FBFBFA',
+                        charcoal: {
+                            DEFAULT: '#333333',
+                            muted: '#666666',
+                            light: '#999999',
+                        },
+                        pastel: {
+                            lavender: '#E6E6FA',
+                            lavenderText: '#5B5B7E',
+                            gray: '#F0F0F0',
+                            grayText: '#555555',
+                            yellow: '#FEF3C7',
+                            yellowText: '#B45309',
+                            green: '#D1FAE5',
+                            greenText: '#065F46',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 30px -10px rgba(143, 188, 143, 0.1), 0 1px 3px rgba(0, 0, 0, 0.02)',
+                        'soft-hover': '0 20px 40px -15px rgba(143, 188, 143, 0.15), 0 1px 5px rgba(0, 0, 0, 0.03)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #FBFBFA;
+        }
+    </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body class="text-charcoal min-h-screen flex items-center justify-center font-sans antialiased py-12 px-4 sm:px-6">
 
     <!-- KONTENER UTAMA -->
-    <div id="app" class="w-full max-w-4xl p-4">
+    <div id="app" class="w-full max-w-6xl">
 
         <!-- HALAMAN AUTENTIKASI (LOGIN/REGISTER) -->
-        <div id="auth-section" class="bg-white p-8 rounded-xl shadow-lg max-w-md mx-auto">
-            <div class="text-center mb-6">
-                <h1 class="text-2xl font-bold text-gray-800">Hananori Konveksi 🧵</h1>
-                <p class="text-gray-500 text-sm mt-1" id="auth-subtitle">Silakan masuk ke akun admin</p>
+        <div id="auth-section" class="bg-white p-10 rounded-2xl shadow-soft border border-gray-100/50 max-w-md mx-auto transition-all duration-300 hover:shadow-soft-hover">
+            <div class="text-center mb-8">
+                <!-- Spool of Thread SVG -->
+                <svg class="w-12 h-12 mx-auto text-sage-500 mb-4 transition-transform duration-300 hover:rotate-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M8 3h8" />
+                    <path d="M8 21h8" />
+                    <path d="M9 3v18" />
+                    <path d="M15 3v18" />
+                    <path d="M9 7h6" />
+                    <path d="M9 10h6" />
+                    <path d="M9 13h6" />
+                    <path d="M9 16h6" />
+                    <path d="M15 16c2 0 3 1.5 3 3s-1 2-3 2" />
+                </svg>
+                <h1 class="text-2xl font-light tracking-wide text-charcoal" id="auth-title">Hananori Konveksi</h1>
+                <p class="text-charcoal-muted text-xs mt-2" id="auth-subtitle">Silakan masuk ke akun admin</p>
             </div>
 
             <!-- Form Auth -->
-            <form id="auth-form" class="space-y-4">
+            <form id="auth-form" class="space-y-5">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Username</label>
-                    <input type="text" id="username" class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" required>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-charcoal-muted mb-1.5">Username</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+                            <svg class="w-4 h-4 text-charcoal-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                <circle cx="12" cy="7" r="4" />
+                            </svg>
+                        </span>
+                        <input type="text" id="username" class="w-full pl-10 pr-4 py-2.5 bg-cream border border-gray-200/80 rounded-xl focus:border-sage-500 focus:ring-2 focus:ring-sage-200 outline-none transition text-sm text-charcoal placeholder-charcoal-light" placeholder="Masukkan username" required>
+                    </div>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Password</label>
-                    <input type="password" id="password" class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" required>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-charcoal-muted mb-1.5">Password</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
+                            <svg class="w-4 h-4 text-charcoal-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                            </svg>
+                        </span>
+                        <input type="password" id="password" class="w-full pl-10 pr-4 py-2.5 bg-cream border border-gray-200/80 rounded-xl focus:border-sage-500 focus:ring-2 focus:ring-sage-200 outline-none transition text-sm text-charcoal placeholder-charcoal-light" placeholder="••••••••" required>
+                    </div>
                 </div>
-                <button type="submit" id="auth-btn" class="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition">Login</button>
+                <button type="submit" id="auth-btn" class="w-full bg-sage-500 hover:bg-sage-600 active:bg-sage-700 text-white font-medium py-2.5 rounded-xl shadow-sm hover:shadow-md transition duration-200 text-sm">Login</button>
             </form>
 
-            <div class="mt-4 text-center">
-                <button id="toggle-auth" class="text-sm text-blue-600 hover:underline">Belum punya akun? Register di sini</button>
+            <div class="mt-6 text-center">
+                <button id="toggle-auth" class="text-xs text-charcoal-muted hover:text-sage-600 transition underline-offset-4 hover:underline">Belum punya akun? Register di sini</button>
             </div>
-            <div id="auth-message" class="mt-4 text-center text-sm font-semibold"></div>
+            <div id="auth-message" class="mt-4 text-center text-xs font-semibold"></div>
         </div>
 
         <!-- HALAMAN DASHBOARD (INPUT & VIEW DATA) -->
-        <div id="dashboard-section" class="hidden space-y-6">
+        <div id="dashboard-section" class="hidden space-y-8 w-full">
             <!-- Header Dashboard -->
-            <div class="flex justify-between items-center bg-white p-6 rounded-xl shadow-sm">
-                <h2 class="text-xl font-bold text-gray-800">Sistem Pelacakan Produksi</h2>
-                <button id="logout-btn" class="text-red-500 font-semibold hover:underline">Logout</button>
+            <div class="flex justify-between items-center bg-white py-5 px-8 rounded-2xl shadow-soft border border-gray-100/50">
+                <div class="flex items-center space-x-3">
+                    <svg class="w-8 h-8 text-sage-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 3h8" />
+                        <path d="M8 21h8" />
+                        <path d="M9 3v18" />
+                        <path d="M15 3v18" />
+                        <path d="M9 7h6" />
+                        <path d="M9 10h6" />
+                        <path d="M9 13h6" />
+                        <path d="M9 16h6" />
+                        <path d="M15 16c2 0 3 1.5 3 3s-1 2-3 2" />
+                    </svg>
+                    <h2 class="text-lg font-medium tracking-wide text-charcoal">Sistem Pelacakan Produksi</h2>
+                </div>
+                <button id="logout-btn" class="flex items-center text-charcoal-muted hover:text-sage-600 font-medium text-sm transition group">
+                    <svg class="w-4 h-4 mr-1.5 transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
+                    Logout
+                </button>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                 <!-- Form Input Data -->
-                <div class="bg-white p-6 rounded-xl shadow-sm md:col-span-1 h-fit">
-                    <h3 class="font-bold text-gray-700 mb-4">Input Pesanan Baru</h3>
-                    <form id="pesanan-form" class="space-y-3">
-                        <input type="text" id="nama_pelanggan" placeholder="Nama Pelanggan" class="w-full px-3 py-2 border rounded outline-none text-sm" required>
-                        <input type="text" id="jenis_pakaian" placeholder="Jenis Pakaian (Cth: Jaket Bomber)" class="w-full px-3 py-2 border rounded outline-none text-sm" required>
-                        <input type="number" id="jumlah" placeholder="Jumlah Pesanan" class="w-full px-3 py-2 border rounded outline-none text-sm" required>
-                        <select id="tahapan_produksi" class="w-full px-3 py-2 border rounded outline-none text-sm text-gray-600">
-                            <option value="Potong Bahan">Potong Bahan</option>
-                            <option value="Jahit">Jahit</option>
-                            <option value="Sablon/Bordir">Sablon/Bordir</option>
-                            <option value="Finishing & Packing">Finishing & Packing</option>
-                        </select>
-                        <button type="submit" class="w-full bg-green-600 text-white font-semibold py-2 rounded hover:bg-green-700 text-sm">Simpan Pesanan</button>
+                <div class="bg-white p-8 rounded-2xl shadow-soft border border-gray-100/50 lg:col-span-1">
+                    <h3 class="text-sm font-semibold uppercase tracking-wider text-charcoal mb-5">Input Pesanan Baru</h3>
+                    <form id="pesanan-form" class="space-y-4">
+                        <div>
+                            <input type="text" id="nama_pelanggan" placeholder="Nama Pelanggan" class="w-full px-4 py-2.5 bg-cream border border-gray-200/80 rounded-xl focus:border-sage-500 focus:ring-2 focus:ring-sage-200 outline-none transition text-sm text-charcoal placeholder-charcoal-light" required>
+                        </div>
+                        <div>
+                            <input type="text" id="jenis_pakaian" placeholder="Jenis Pakaian (Cth: Jaket Bomber)" class="w-full px-4 py-2.5 bg-cream border border-gray-200/80 rounded-xl focus:border-sage-500 focus:ring-2 focus:ring-sage-200 outline-none transition text-sm text-charcoal placeholder-charcoal-light" required>
+                        </div>
+                        <div>
+                            <input type="number" id="jumlah" placeholder="Jumlah Pesanan" class="w-full px-4 py-2.5 bg-cream border border-gray-200/80 rounded-xl focus:border-sage-500 focus:ring-2 focus:ring-sage-200 outline-none transition text-sm text-charcoal placeholder-charcoal-light" required>
+                        </div>
+                        <div>
+                            <select id="tahapan_produksi" class="w-full px-4 py-2.5 bg-cream border border-gray-200/80 rounded-xl focus:border-sage-500 focus:ring-2 focus:ring-sage-200 outline-none transition text-sm text-charcoal-muted">
+                                <option value="Potong Bahan">Potong Bahan</option>
+                                <option value="Jahit">Jahit</option>
+                                <option value="Sablon/Bordir">Sablon/Bordir</option>
+                                <option value="Finishing & Packing">Finishing & Packing</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full bg-sage-500 hover:bg-sage-600 active:bg-sage-700 text-white font-medium py-2.5 rounded-xl shadow-sm hover:shadow-md transition duration-200 text-sm">Simpan Pesanan</button>
                     </form>
-                    <p id="pesanan-message" class="mt-3 text-sm text-center font-semibold text-green-600"></p>
+                    <p id="pesanan-message" class="mt-4 text-xs text-center font-semibold text-sage-600"></p>
                 </div>
 
                 <!-- Tabel Data -->
-                <div class="bg-white p-6 rounded-xl shadow-sm md:col-span-2 overflow-x-auto">
-                    <h3 class="font-bold text-gray-700 mb-4">Daftar Pesanan Aktif</h3>
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-gray-100 text-gray-600 text-sm">
-                                <th class="p-3 border-b">Pelanggan</th>
-                                <th class="p-3 border-b">Pakaian</th>
-                                <th class="p-3 border-b text-center">Jumlah</th>
-                                <th class="p-3 border-b">Status Tahapan</th>
-                            </tr>
-                        </thead>
-                        <tbody id="table-body" class="text-sm">
-                            <!-- Data dari API akan masuk ke sini -->
-                        </tbody>
-                    </table>
+                <div class="bg-white p-8 rounded-2xl shadow-soft border border-gray-100/50 lg:col-span-2 overflow-hidden">
+                    <h3 class="text-sm font-semibold uppercase tracking-wider text-charcoal mb-5">Daftar Pesanan Aktif</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="text-charcoal-muted text-xs uppercase tracking-wider border-b border-gray-100">
+                                    <th class="pb-4 pt-2 font-semibold">Pelanggan</th>
+                                    <th class="pb-4 pt-2 font-semibold">Pakaian</th>
+                                    <th class="pb-4 pt-2 font-semibold text-center">Jumlah</th>
+                                    <th class="pb-4 pt-2 font-semibold">Status Tahapan</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body" class="text-sm divide-y divide-gray-100">
+                                <!-- Data dari API akan masuk ke sini -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -131,11 +241,11 @@
                         showDashboard();
                     } else {
                         document.getElementById('auth-message').innerText = "Register sukses! Silakan Login.";
-                        document.getElementById('auth-message').className = "mt-4 text-center text-sm font-semibold text-green-600";
+                        document.getElementById('auth-message').className = "mt-4 text-center text-xs font-semibold text-sage-600";
                     }
                 } else {
                     document.getElementById('auth-message').innerText = data.message || "Terjadi kesalahan.";
-                    document.getElementById('auth-message').className = "mt-4 text-center text-sm font-semibold text-red-600";
+                    document.getElementById('auth-message').className = "mt-4 text-center text-xs font-semibold text-red-500";
                 }
             } catch (error) {
                 console.error("Error:", error);
@@ -184,20 +294,32 @@
                 tbody.innerHTML = ""; // Bersihkan tabel
                 
                 data.forEach(item => {
-                    // Warna lencana berdasarkan tahapan produksi
-                    let badgeColor = "bg-gray-200 text-gray-800";
-                    if(item.tahapan_produksi === "Potong Bahan") badgeColor = "bg-blue-100 text-blue-800";
-                    if(item.tahapan_produksi === "Jahit") badgeColor = "bg-yellow-100 text-yellow-800";
-                    if(item.tahapan_produksi === "Finishing & Packing") badgeColor = "bg-green-100 text-green-800";
+                    // Warna lencana & ikon berdasarkan tahapan produksi
+                    let badgeColor = "bg-pastel-gray text-pastel-grayText";
+                    let iconSVG = "";
+
+                    if (item.tahapan_produksi === "Potong Bahan") {
+                        badgeColor = "bg-pastel-lavender text-pastel-lavenderText";
+                        iconSVG = `<svg class="w-3.5 h-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3" /><circle cx="6" cy="18" r="3" /><line x1="9.8" y1="8.2" x2="21" y2="19.4" /><line x1="9.8" y1="15.8" x2="21" y2="4.6" /></svg>`;
+                    } else if (item.tahapan_produksi === "Jahit") {
+                        badgeColor = "bg-pastel-yellow text-pastel-yellowText";
+                        iconSVG = `<svg class="w-3.5 h-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="19" x2="19" y2="5" /><circle cx="18" cy="6" r="1" /><path d="M19 5c2-2 4-1 4 1s-2 3-4 1" /></svg>`;
+                    } else if (item.tahapan_produksi === "Sablon/Bordir") {
+                        badgeColor = "bg-pastel-gray text-pastel-grayText";
+                        iconSVG = `<svg class="w-3.5 h-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" /></svg>`;
+                    } else if (item.tahapan_produksi === "Finishing & Packing") {
+                        badgeColor = "bg-pastel-green text-pastel-greenText";
+                        iconSVG = `<svg class="w-3.5 h-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8" /><rect x="1" y="3" width="22" height="5" /><line x1="10" y1="12" x2="14" y2="12" /></svg>`;
+                    }
 
                     tbody.innerHTML += `
-                        <tr class="border-b hover:bg-gray-50">
-                            <td class="p-3 font-semibold">${item.nama_pelanggan}</td>
-                            <td class="p-3">${item.jenis_pakaian}</td>
-                            <td class="p-3 text-center">${item.jumlah}</td>
-                            <td class="p-3">
-                                <span class="px-2 py-1 text-xs rounded-full font-semibold ${badgeColor}">
-                                    ${item.tahapan_produksi}
+                        <tr class="hover:bg-cream/40 transition-colors">
+                            <td class="py-4 pr-4 font-medium text-charcoal">${item.nama_pelanggan}</td>
+                            <td class="py-4 pr-4 text-charcoal-muted">${item.jenis_pakaian}</td>
+                            <td class="py-4 pr-4 text-center font-medium text-charcoal-muted">${item.jumlah}</td>
+                            <td class="py-4">
+                                <span class="inline-flex items-center px-2.5 py-1 text-xs rounded-full font-medium ${badgeColor}">
+                                    ${iconSVG}${item.tahapan_produksi}
                                 </span>
                             </td>
                         </tr>
