@@ -58,6 +58,72 @@
         body {
             background-color: #FBFBFA;
         }
+
+        /* 1. Page Load Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* 2. Button Interactions */
+        .btn-animate {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .btn-animate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -6px rgba(143, 188, 143, 0.4);
+        }
+
+        .btn-animate:active {
+            transform: translateY(0px) scale(0.98);
+        }
+
+        /* 3. Form Focus Effects */
+        .input-animate {
+            transition: border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .input-animate:focus {
+            border-color: #8FBC8F !important;
+            box-shadow: 0 0 0 4px rgba(143, 188, 143, 0.25) !important;
+        }
+
+        /* 4. Table Row Hover Animation */
+        .table-row-animate {
+            transition: background-color 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .table-row-animate:hover {
+            background-color: rgba(244, 247, 244, 0.7);
+            transform: translateX(4px);
+        }
+
+        /* 5. Subtle Status Pulse Animation */
+        @keyframes subtlePulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.85;
+                transform: scale(0.98);
+            }
+        }
+
+        .animate-pulse-subtle {
+            animation: subtlePulse 2.5s infinite ease-in-out;
+        }
     </style>
 </head>
 
@@ -68,7 +134,7 @@
 
         <!-- HALAMAN AUTENTIKASI (LOGIN/REGISTER) -->
         <div id="auth-section"
-            class="bg-white p-10 rounded-2xl shadow-soft border border-gray-100/50 max-w-md mx-auto transition-all duration-300 hover:shadow-soft-hover">
+            class="bg-white p-10 rounded-2xl shadow-soft border border-gray-100/50 max-w-md mx-auto transition-all duration-300 hover:shadow-soft-hover animate-fade-in-up">
             <div class="text-center mb-8">
                 <!-- Spool of Thread SVG -->
                 <svg class="w-12 h-12 mx-auto text-sage-500 mb-4 transition-transform duration-300 hover:rotate-12"
@@ -102,7 +168,7 @@
                             </svg>
                         </span>
                         <input type="text" id="username"
-                            class="w-full pl-10 pr-4 py-2.5 bg-cream border border-gray-200/80 rounded-xl focus:border-sage-500 focus:ring-2 focus:ring-sage-200 outline-none transition text-sm text-charcoal placeholder-charcoal-light"
+                            class="w-full pl-10 pr-4 py-2.5 bg-cream border border-gray-200/80 rounded-xl focus:ring-0 outline-none text-sm text-charcoal placeholder-charcoal-light input-animate"
                             placeholder="Masukkan username" required>
                     </div>
                 </div>
@@ -118,12 +184,12 @@
                             </svg>
                         </span>
                         <input type="password" id="password"
-                            class="w-full pl-10 pr-4 py-2.5 bg-cream border border-gray-200/80 rounded-xl focus:border-sage-500 focus:ring-2 focus:ring-sage-200 outline-none transition text-sm text-charcoal placeholder-charcoal-light"
+                            class="w-full pl-10 pr-4 py-2.5 bg-cream border border-gray-200/80 rounded-xl focus:ring-0 outline-none text-sm text-charcoal placeholder-charcoal-light input-animate"
                             placeholder="••••••••" required>
                     </div>
                 </div>
                 <button type="submit" id="auth-btn"
-                    class="w-full bg-sage-500 hover:bg-sage-600 active:bg-sage-700 text-white font-medium py-2.5 rounded-xl shadow-sm hover:shadow-md transition duration-200 text-sm">Login</button>
+                    class="w-full bg-sage-500 hover:bg-sage-600 active:bg-sage-700 text-white font-medium py-2.5 rounded-xl shadow-sm hover:shadow-md text-sm btn-animate">Login</button>
             </form>
 
             <div class="mt-6 text-center">
@@ -140,7 +206,7 @@
             <div
                 class="flex justify-between items-center bg-white py-5 px-8 rounded-2xl shadow-soft border border-gray-100/50">
                 <div class="flex items-center space-x-3">
-                    <svg class="w-8 h-8 text-sage-500" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    <svg class="w-8 h-8 text-sage-500 animate-pulse-subtle" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M8 3h8" />
                         <path d="M8 21h8" />
@@ -175,22 +241,22 @@
                     <form id="pesanan-form" class="space-y-4">
                         <div>
                             <input type="text" id="nama_pelanggan" placeholder="Nama Pelanggan"
-                                class="w-full px-4 py-2.5 bg-cream border border-gray-200/80 rounded-xl focus:border-sage-500 focus:ring-2 focus:ring-sage-200 outline-none transition text-sm text-charcoal placeholder-charcoal-light"
+                                class="w-full px-4 py-2.5 bg-cream border border-gray-200/80 rounded-xl focus:ring-0 outline-none text-sm text-charcoal placeholder-charcoal-light input-animate"
                                 required>
                         </div>
                         <div>
                             <input type="text" id="jenis_pakaian" placeholder="Jenis Pakaian (Cth: Jaket Bomber)"
-                                class="w-full px-4 py-2.5 bg-cream border border-gray-200/80 rounded-xl focus:border-sage-500 focus:ring-2 focus:ring-sage-200 outline-none transition text-sm text-charcoal placeholder-charcoal-light"
+                                class="w-full px-4 py-2.5 bg-cream border border-gray-200/80 rounded-xl focus:ring-0 outline-none text-sm text-charcoal placeholder-charcoal-light input-animate"
                                 required>
                         </div>
                         <div>
                             <input type="number" id="jumlah" placeholder="Jumlah Pesanan"
-                                class="w-full px-4 py-2.5 bg-cream border border-gray-200/80 rounded-xl focus:border-sage-500 focus:ring-2 focus:ring-sage-200 outline-none transition text-sm text-charcoal placeholder-charcoal-light"
+                                class="w-full px-4 py-2.5 bg-cream border border-gray-200/80 rounded-xl focus:ring-0 outline-none text-sm text-charcoal placeholder-charcoal-light input-animate"
                                 required>
                         </div>
                         <div>
                             <select id="tahapan_produksi"
-                                class="w-full px-4 py-2.5 bg-cream border border-gray-200/80 rounded-xl focus:border-sage-500 focus:ring-2 focus:ring-sage-200 outline-none transition text-sm text-charcoal-muted">
+                                class="w-full px-4 py-2.5 bg-cream border border-gray-200/80 rounded-xl focus:ring-0 outline-none text-sm text-charcoal-muted input-animate">
                                 <option value="Potong Bahan">Potong Bahan</option>
                                 <option value="Jahit">Jahit</option>
                                 <option value="Sablon/Bordir">Sablon/Bordir</option>
@@ -198,7 +264,7 @@
                             </select>
                         </div>
                         <button type="submit"
-                            class="w-full bg-sage-500 hover:bg-sage-600 active:bg-sage-700 text-white font-medium py-2.5 rounded-xl shadow-sm hover:shadow-md transition duration-200 text-sm">Simpan
+                            class="w-full bg-sage-500 hover:bg-sage-600 active:bg-sage-700 text-white font-medium py-2.5 rounded-xl shadow-sm hover:shadow-md text-sm btn-animate">Simpan
                             Pesanan</button>
                     </form>
                     <p id="pesanan-message" class="mt-4 text-xs text-center font-semibold text-sage-600"></p>
@@ -347,12 +413,12 @@
                     }
 
                     tbody.innerHTML += `
-                        <tr class="hover:bg-cream/40 transition-colors">
+                        <tr class="table-row-animate hover:bg-cream/40">
                             <td class="py-4 pr-4 font-medium text-charcoal">${item.nama_pelanggan}</td>
                             <td class="py-4 pr-4 text-charcoal-muted">${item.jenis_pakaian}</td>
                             <td class="py-4 pr-4 text-center font-medium text-charcoal-muted">${item.jumlah}</td>
                             <td class="py-4">
-                                <span class="inline-flex items-center px-2.5 py-1 text-xs rounded-full font-medium ${badgeColor}">
+                                <span class="inline-flex items-center px-2.5 py-1 text-xs rounded-full font-medium ${badgeColor} animate-pulse-subtle">
                                     ${iconSVG}${item.tahapan_produksi}
                                 </span>
                             </td>
@@ -366,6 +432,7 @@
         function showDashboard() {
             authSection.classList.add('hidden');
             dashboardSection.classList.remove('hidden');
+            dashboardSection.classList.add('animate-fade-in-up');
             fetchDataPesanan(); // Tarik data saat masuk dashboard
         }
 
@@ -373,7 +440,9 @@
         document.getElementById('logout-btn').addEventListener('click', () => {
             localStorage.removeItem('token');
             dashboardSection.classList.add('hidden');
+            dashboardSection.classList.remove('animate-fade-in-up');
             authSection.classList.remove('hidden');
+            authSection.classList.add('animate-fade-in-up');
             document.getElementById('auth-message').innerText = "";
             document.getElementById('username').value = "";
             document.getElementById('password').value = "";
